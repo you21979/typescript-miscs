@@ -58,8 +58,7 @@ module mod{
 // 関数配列
 ()=>{
     var a:Function[] = [(x)=>x+1];
-    //var b:(x:number)=>number = [];
-    // リテラル版どうやってやるんだ？
+    var b:{(x:number):number;}[] = [(x)=>x+1];
 },
 // オブジェクト
 ()=>{
