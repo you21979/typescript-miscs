@@ -8,12 +8,14 @@ var MAX_PIPELINE:number = 100; // 実行数
  *  パイプライン直列化クラス
  */
 export class Pipeline{
-    private q:Function[] = [];
-    private runflag:bool = false;
+    private q:{():void;}[];
+    private runflag:bool;
     /**
      *  初期化
      */
     constructor(){
+        this.q = [];
+        this.runflag = false;
     }
     /**
      *  後始末
@@ -52,11 +54,13 @@ export class Pipeline{
     /**
      *  タスクを作成する
      */
-    public createTask(funcs:Function[]):Function{
+    public createTask(
+        funcs:{(cb:(arg:any)=>void, arg:any):void;}[]
+    ):(cb:(err:any,arg:any)=>void, arg:any)=>void{
         var i:number = 0;
         var len:number = funcs.length;
-        var q:Function[] = this.q;
-        return function f(cb:Function, arg:any):void{
+        var q:{():void;}[] = this.q;
+        return function f(cb:(err:any,arg:any)=>void, arg:any):void{
             if(i >= len){
                 if(cb){
                     cb(null, arg);
@@ -75,4 +79,3 @@ export class Pipeline{
         };
     }
 }
-
